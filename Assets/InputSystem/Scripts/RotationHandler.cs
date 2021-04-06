@@ -14,7 +14,7 @@ namespace KhanhAK.XR.InputSystem
 
         private void Update()
         {
-            var look = Input.VRAction.VRRightHand.Rotation.ReadValue<Vector2>();
+            var look = Input.VRAction.Locomotion.Rotation.ReadValue<Vector2>();
 
             if (!lockRotation)
             {

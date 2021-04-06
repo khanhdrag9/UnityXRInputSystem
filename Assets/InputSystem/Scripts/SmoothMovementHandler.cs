@@ -18,7 +18,7 @@ namespace KhanhAK.XR.InputSystem
             if (TargetTransform == null)
                 return;
 
-            var smoothMovement = Input.VRAction.VRLeftHand.SmoothMovement;
+            var smoothMovement = Input.VRAction.Locomotion.SmoothMovement;
             var moveDelta = smoothMovement.ReadValue<Vector2>();
 
             Vector3 move = new Vector3(moveDelta.x, 0, moveDelta.y);    // Convert to 3D direction
