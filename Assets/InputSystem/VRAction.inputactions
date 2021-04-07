@@ -2,16 +2,85 @@
     "name": "VRAction",
     "maps": [
         {
+            "name": "VRHead",
+            "id": "75b48ca3-7db5-46fd-8c6a-f49b86ca8aeb",
+            "actions": [
+                {
+                    "name": "RotationVR",
+                    "type": "Value",
+                    "id": "e4e77671-b798-41ba-a4ee-3a262bb620c6",
+                    "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "d4c500bd-7b97-4db3-beef-38c703ee6cee",
+                    "path": "<XRHMD>/deviceRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotationVR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
             "name": "VRLeftHand",
             "id": "ed544dae-979b-4568-95fd-b4162ea2922d",
-            "actions": [],
-            "bindings": []
+            "actions": [
+                {
+                    "name": "RotationVR",
+                    "type": "Value",
+                    "id": "a32d3b5d-0a37-480a-989c-f3ff1059ca5e",
+                    "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "eb0cc8a4-e851-4a53-b791-42bd56a62564",
+                    "path": "<XRController>{LeftHand}/deviceRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotationVR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         },
         {
             "name": "VRRightHand",
             "id": "5604e1da-7cd8-4028-ae8d-208c210c5d5c",
-            "actions": [],
-            "bindings": []
+            "actions": [
+                {
+                    "name": "RotationVR",
+                    "type": "Value",
+                    "id": "75c41c1b-67ab-4c62-b2d6-687cb203ae6b",
+                    "expectedControlType": "Quaternion",
+                    "processors": "",
+                    "interactions": ""
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "089f06ec-c363-4505-8df3-310b93d766a5",
+                    "path": "<XRController>{RightHand}/deviceRotation",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "VR Generic",
+                    "action": "RotationVR",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
         },
         {
             "name": "Locomotion",

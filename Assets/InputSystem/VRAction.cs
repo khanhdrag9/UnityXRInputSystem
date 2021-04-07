@@ -15,16 +15,85 @@ public class @VRAction : IInputActionCollection, IDisposable
     ""name"": ""VRAction"",
     ""maps"": [
         {
+            ""name"": ""VRHead"",
+            ""id"": ""75b48ca3-7db5-46fd-8c6a-f49b86ca8aeb"",
+            ""actions"": [
+                {
+                    ""name"": ""RotationVR"",
+                    ""type"": ""Value"",
+                    ""id"": ""e4e77671-b798-41ba-a4ee-3a262bb620c6"",
+                    ""expectedControlType"": ""Quaternion"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""d4c500bd-7b97-4db3-beef-38c703ee6cee"",
+                    ""path"": ""<XRHMD>/deviceRotation"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotationVR"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
+        },
+        {
             ""name"": ""VRLeftHand"",
             ""id"": ""ed544dae-979b-4568-95fd-b4162ea2922d"",
-            ""actions"": [],
-            ""bindings"": []
+            ""actions"": [
+                {
+                    ""name"": ""RotationVR"",
+                    ""type"": ""Value"",
+                    ""id"": ""a32d3b5d-0a37-480a-989c-f3ff1059ca5e"",
+                    ""expectedControlType"": ""Quaternion"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""eb0cc8a4-e851-4a53-b791-42bd56a62564"",
+                    ""path"": ""<XRController>{LeftHand}/deviceRotation"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotationVR"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         },
         {
             ""name"": ""VRRightHand"",
             ""id"": ""5604e1da-7cd8-4028-ae8d-208c210c5d5c"",
-            ""actions"": [],
-            ""bindings"": []
+            ""actions"": [
+                {
+                    ""name"": ""RotationVR"",
+                    ""type"": ""Value"",
+                    ""id"": ""75c41c1b-67ab-4c62-b2d6-687cb203ae6b"",
+                    ""expectedControlType"": ""Quaternion"",
+                    ""processors"": """",
+                    ""interactions"": """"
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""089f06ec-c363-4505-8df3-310b93d766a5"",
+                    ""path"": ""<XRController>{RightHand}/deviceRotation"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""VR Generic"",
+                    ""action"": ""RotationVR"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         },
         {
             ""name"": ""Locomotion"",
@@ -450,10 +519,15 @@ public class @VRAction : IInputActionCollection, IDisposable
         }
     ]
 }");
+        // VRHead
+        m_VRHead = asset.FindActionMap("VRHead", throwIfNotFound: true);
+        m_VRHead_RotationVR = m_VRHead.FindAction("RotationVR", throwIfNotFound: true);
         // VRLeftHand
         m_VRLeftHand = asset.FindActionMap("VRLeftHand", throwIfNotFound: true);
+        m_VRLeftHand_RotationVR = m_VRLeftHand.FindAction("RotationVR", throwIfNotFound: true);
         // VRRightHand
         m_VRRightHand = asset.FindActionMap("VRRightHand", throwIfNotFound: true);
+        m_VRRightHand_RotationVR = m_VRRightHand.FindAction("RotationVR", throwIfNotFound: true);
         // Locomotion
         m_Locomotion = asset.FindActionMap("Locomotion", throwIfNotFound: true);
         m_Locomotion_SmoothMovement = m_Locomotion.FindAction("SmoothMovement", throwIfNotFound: true);
@@ -512,13 +586,48 @@ public class @VRAction : IInputActionCollection, IDisposable
         asset.Disable();
     }
 
+    // VRHead
+    private readonly InputActionMap m_VRHead;
+    private IVRHeadActions m_VRHeadActionsCallbackInterface;
+    private readonly InputAction m_VRHead_RotationVR;
+    public struct VRHeadActions
+    {
+        private @VRAction m_Wrapper;
+        public VRHeadActions(@VRAction wrapper) { m_Wrapper = wrapper; }
+        public InputAction @RotationVR => m_Wrapper.m_VRHead_RotationVR;
+        public InputActionMap Get() { return m_Wrapper.m_VRHead; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(VRHeadActions set) { return set.Get(); }
+        public void SetCallbacks(IVRHeadActions instance)
+        {
+            if (m_Wrapper.m_VRHeadActionsCallbackInterface != null)
+            {
+                @RotationVR.started -= m_Wrapper.m_VRHeadActionsCallbackInterface.OnRotationVR;
+                @RotationVR.performed -= m_Wrapper.m_VRHeadActionsCallbackInterface.OnRotationVR;
+                @RotationVR.canceled -= m_Wrapper.m_VRHeadActionsCallbackInterface.OnRotationVR;
+            }
+            m_Wrapper.m_VRHeadActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @RotationVR.started += instance.OnRotationVR;
+                @RotationVR.performed += instance.OnRotationVR;
+                @RotationVR.canceled += instance.OnRotationVR;
+            }
+        }
+    }
+    public VRHeadActions @VRHead => new VRHeadActions(this);
+
     // VRLeftHand
     private readonly InputActionMap m_VRLeftHand;
     private IVRLeftHandActions m_VRLeftHandActionsCallbackInterface;
+    private readonly InputAction m_VRLeftHand_RotationVR;
     public struct VRLeftHandActions
     {
         private @VRAction m_Wrapper;
         public VRLeftHandActions(@VRAction wrapper) { m_Wrapper = wrapper; }
+        public InputAction @RotationVR => m_Wrapper.m_VRLeftHand_RotationVR;
         public InputActionMap Get() { return m_Wrapper.m_VRLeftHand; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -528,10 +637,16 @@ public class @VRAction : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_VRLeftHandActionsCallbackInterface != null)
             {
+                @RotationVR.started -= m_Wrapper.m_VRLeftHandActionsCallbackInterface.OnRotationVR;
+                @RotationVR.performed -= m_Wrapper.m_VRLeftHandActionsCallbackInterface.OnRotationVR;
+                @RotationVR.canceled -= m_Wrapper.m_VRLeftHandActionsCallbackInterface.OnRotationVR;
             }
             m_Wrapper.m_VRLeftHandActionsCallbackInterface = instance;
             if (instance != null)
             {
+                @RotationVR.started += instance.OnRotationVR;
+                @RotationVR.performed += instance.OnRotationVR;
+                @RotationVR.canceled += instance.OnRotationVR;
             }
         }
     }
@@ -540,10 +655,12 @@ public class @VRAction : IInputActionCollection, IDisposable
     // VRRightHand
     private readonly InputActionMap m_VRRightHand;
     private IVRRightHandActions m_VRRightHandActionsCallbackInterface;
+    private readonly InputAction m_VRRightHand_RotationVR;
     public struct VRRightHandActions
     {
         private @VRAction m_Wrapper;
         public VRRightHandActions(@VRAction wrapper) { m_Wrapper = wrapper; }
+        public InputAction @RotationVR => m_Wrapper.m_VRRightHand_RotationVR;
         public InputActionMap Get() { return m_Wrapper.m_VRRightHand; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -553,10 +670,16 @@ public class @VRAction : IInputActionCollection, IDisposable
         {
             if (m_Wrapper.m_VRRightHandActionsCallbackInterface != null)
             {
+                @RotationVR.started -= m_Wrapper.m_VRRightHandActionsCallbackInterface.OnRotationVR;
+                @RotationVR.performed -= m_Wrapper.m_VRRightHandActionsCallbackInterface.OnRotationVR;
+                @RotationVR.canceled -= m_Wrapper.m_VRRightHandActionsCallbackInterface.OnRotationVR;
             }
             m_Wrapper.m_VRRightHandActionsCallbackInterface = instance;
             if (instance != null)
             {
+                @RotationVR.started += instance.OnRotationVR;
+                @RotationVR.performed += instance.OnRotationVR;
+                @RotationVR.canceled += instance.OnRotationVR;
             }
         }
     }
@@ -702,11 +825,17 @@ public class @VRAction : IInputActionCollection, IDisposable
             return asset.controlSchemes[m_ControllerGenericSchemeIndex];
         }
     }
+    public interface IVRHeadActions
+    {
+        void OnRotationVR(InputAction.CallbackContext context);
+    }
     public interface IVRLeftHandActions
     {
+        void OnRotationVR(InputAction.CallbackContext context);
     }
     public interface IVRRightHandActions
     {
+        void OnRotationVR(InputAction.CallbackContext context);
     }
     public interface ILocomotionActions
     {
