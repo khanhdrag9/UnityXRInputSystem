@@ -3,13 +3,10 @@
     "displayName": "New Input System XR",
     "version": "1.0.0",
     "unity": "2018.1",
-    "description": "This package provides X, Y, and Z. \n\nTo find out more, click the \"View Documentation\" link.",
+    "description": "This package provides map for mixing XR, keyboard&mouse, gamepad",
     "keywords": ["key X", "key Y", "key Z"],
     "category": "Controllers",
     "dependencies": {
-        "com.unity.inputsystem": "1.0.2",
-        "com.unity.modules.xr": "1.0.0",
-        "com.unity.xr.management": "4.0.1",
-        "com.unity.xr.oculus": "1.6.1"
+        "com.unity.inputsystem": "1.0.2"
     }
 }

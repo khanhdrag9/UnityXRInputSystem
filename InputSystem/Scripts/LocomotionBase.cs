@@ -12,6 +12,6 @@ namespace KhanhAK.XR.InputSystem
         public Transform TargetTransform => targetTransform;
         public Transform DirectTransform => directTransform == null ? targetTransform : directTransform;
 
-        protected InputSytemManager Input => InputSytemManager.Instance;
+        protected Map Input => Map.Instance;
     }
 }

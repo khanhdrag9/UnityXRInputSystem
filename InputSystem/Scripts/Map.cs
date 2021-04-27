@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace KhanhAK.XR.InputSystem
 {
-    public class InputSytemManager : MonoBehaviour
+    public class Map : MonoBehaviour
     {
         #region Generic
         private VRAction inputAction = null;
@@ -19,7 +19,7 @@ namespace KhanhAK.XR.InputSystem
             }
         }
 
-        public static InputSytemManager Instance { get; private set; } = null;
+        public static Map Instance { get; private set; } = null;
 
         private void OnEnable()
         {
